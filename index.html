@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DISMAC · Análisis y Diseño de Sistemas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+        :root {
+            --primary: #cc0000;      
+            --primary-dark: #990000;
+            --primary-light: #ff1a1a;
+            --dark: #111111;
+            --gray-dark: #2c2c2c;
+            --gray-light: #f5f5f5;
+            --border-radius: 0.75rem;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 20px rgba(0,0,0,0.08);
+            --transition: all 0.25s ease;
+        }
+        .navbar {
+            background: white;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .logo span {
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary);
+            color: white;
+        }
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+        }
+        .section {
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #eee;
+            scroll-margin-top: 80px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+            color: var(--dark);
+        }
+        .subsection {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--primary-light);
+        }
+        .subsection h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .info-card {
+            background: var(--gray-light);
+            padding: 1.2rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+        }
+        .info-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .diagram-placeholder {
+            background: #fafafa;
+            border: 1px dashed #ccc;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+            margin: 1rem 0;
+        }
+        button, .btn-like {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+        .video-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .video-card {
+            flex: 1 1 280px;
+            background: var(--gray-light);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .video-card iframe {
+            width: 100%;
+            height: 180px;
+        }
+        .video-card p {
+            padding: 0.8rem;
+            font-weight: 500;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            font-size: 1.1rem;
+        }
+        footer {
+            background: var(--dark);
+            color: #aaa;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        .tree-node {
+            background: var(--gray-light);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            position: relative;
+            border-left: 5px solid var(--primary);
+        }
+        .contact-intro-text {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            color: #2c3e4e;
+            background: #fef5e8;
+            padding: 0.8rem 1rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid var(--primary);
+        }
+        .integrantes-box {
+            background: #f0f2f5;
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0 1.5rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        .integrantes-box h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .integrantes-list {
+            list-style: none;
+            margin-left: 1.2rem;
+        }
+        .integrantes-list li {
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        .integrantes-list li::before {
+            content: "✓";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+            }
+            .nav-links.show { display: flex; }
+            .nav-container { flex-direction: row; flex-wrap: wrap; }
+            .container { padding: 1.5rem; }
+            .section { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <h1>DIS<span>MAC</span></h1>
+        </div>
+        <div class="menu-toggle" id="mobileMenu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="#inicio" class="active">Inicio</a>
+            <a href="#marco-teorico">Marco Teórico</a>
+            <a href="#analisis-estructurado">Análisis Estructurado</a>
+            <a href="#orientado-objetos">Orientado a Objetos</a>
+            <a href="#videos">Videos</a>
+            <a href="#contactos">Contactos</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <section id="inicio" class="section">
+        <h2 class="section-title">Bienvenido a DISMAC</h2>
+        <p style="font-size:1.1rem; margin-top:0.5rem;">Sistema de Análisis y Diseño para la Gestión - DISMAC.</p>
+    </section>
+
+    <section id="marco-teorico" class="section">
+        <h2 class="section-title">Marco Teórico</h2>
+        
+        <div class="subsection" id="introduccion">
+            <h3><i class="fas fa-book-open"></i> Introducción</h3>
+        </div>
+        
+        <div class="subsection" id="antecedentes">
+            <h3><i class="fas fa-history"></i> Antecedentes</h3>
+        </div>
+        
+        <div class="subsection" id="planteamiento-problema">
+            <h3><i class="fas fa-exclamation-triangle"></i> Planteamiento del Problema</h3>
+        </div>
+        
+        <div class="subsection" id="arbol-problema">
+            <h3><i class="fas fa-tree"></i> Árbol de Problema</h3>
+            <div class="tree-node"><strong>Efecto principal:</strong> Pérdidas económicas y clientes insatisfechos</div>
+            <div class="tree-node"><strong>Problema central:</strong> Ineficiencia en la gestión de ventas e inventarios</div>
+            <div class="tree-node"><strong>Causas:</strong> Procesos manuales, falta de visibilidad en tiempo real, sistema legado obsoleto.</div>
+        </div>
+        
+        <div class="subsection" id="formulacion-problema">
+            <h3><i class="fas fa-question-circle"></i> Formulación del Problema</h3>
+        </div>
+        
+        <div class="subsection" id="proposito-estudio">
+            <h3><i class="fas fa-bullseye"></i> Propósito del Estudio</h3>
+        </div>
+        
+        <div class="subsection" id="metodologia">
+            <h3><i class="fas fa-project-diagram"></i> Metodología</h3>
+        </div>
+        
+        <div class="subsection" id="planificacion">
+            <h3><i class="fas fa-calendar-alt"></i> Planificación de Actividades</h3>
+            <ul style="margin-left: 1.5rem;">
+                <li>Fase 1: Relevamiento de información (2 semanas)</li>
+                <li>Fase 2: Modelado ambiental y de comportamiento (3 semanas)</li>
+                <li>Fase 3: Diseño orientado a objetos (2 semanas)</li>
+                <li>Fase 4: Validación y prototipo (2 semanas)</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="analisis-estructurado" class="section">
+        <h2 class="section-title">Análisis Estructurado</h2>
+        
+        <div class="subsection">
+            <h3><i class="fas fa-globe"></i> Modelo Ambiental</h3>
+            <div class="info-card"><strong>Declaración de Propósitos:</strong> El sistema debe gestionar ventas, inventarios, clientes y generar reportes. Debe integrarse con sistemas externos de proveedores y pasarelas de pago.</div>
+	<div class="diagram-placeholder" id="contextDiagram">
+	    📊 Diagrama de Contexto<br>
+	    <small>[Entidades externas: Cliente, Proveedor, Administrador] → Sistema de Ventas DISMAC</small>
+	    <br><button onclick="alert('El sistema recibe pedidos, entrega facturas y solicita productos a proveedores.')">Ver detalle</button>
+	</div>
+
+        </div>
+        
+        <div class="subsection">
+            <h3><i class="fas fa-chart-simple"></i> Modelo de Comportamiento</h3>
+            <div class="info-card">
+                <strong>DFD por Niveles:</strong> 
+                Nivel 0: Procesos principales (Ventas, Inventario, Reportes). 
+                Nivel 1: detalle de validación de pago, actualización de stock, etc.
+            </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/diagrama0.jpg" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+            <div class="info-card">
+                <strong>DER (Diagrama Entidad-Relación):</strong> 
+                Principales entidades: Cliente, Producto, Venta, 
+                DetalleVenta, Proveedor, Usuario. 
+                Relaciones: Venta pertenece a Cliente, 
+                DetalleVenta asocia Venta y Producto.
+            </div>
+        </div>
+    </section>
+
+    <section id="orientado-objetos" class="section">
+        <h2 class="section-title">Orientado a Objetos</h2>
+        <div class="card-grid">
+            <div class="info-card"><h4><i class="fas fa-diagram-project"></i> Diagrama de Clases</h4><p>Clases principales: Venta, Producto, Cliente, Inventario, Proveedor. Atributos y métodos definidos con visibilidad privada/pública.</p><button onclick="alert('Ejemplo: clase Venta + calcularTotal(), generarFactura()')">Ver atributos</button></div>
+            <div class="info-card"><h4><i class="fas fa-code-branch"></i> Casos de Uso</h4><p>Actores: Cajero, Administrador, Proveedor. Casos: Registrar venta, gestionar producto, consultar stock, emitir reporte.</p></div>
+            <div class="info-card"><h4><i class="fas fa-clock"></i> Diagrama de Secuencia</h4><p>Interacción para "Realizar compra": Cliente -> Cajero -> Sistema -> BaseDatos -> Confirmación.</p></div>
+        </div>
+    </section>
+
+    <section id="videos" class="section">
+        <h2 class="section-title">Recursos Multimedia</h2>
+        <div class="video-grid">
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/1" title="demo1" frameborder="0" allowfullscreen></iframe>
+                <p>🎥 Explicación: Modelo Ambiental</p>
+            </div>
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/2" title="demo2" frameborder="0" allowfullscreen></iframe>
+                <p>📐 DFD y Diseño Estructurado</p>
+            </div>
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/3" title="demo3" frameborder="0" allowfullscreen></iframe>
+                <p>📦 Orientación a Objetos aplicada</p>
+            </div>
+        </div>
+        <p style="margin-top: 1rem;"><em>Recursos.</em></p>
+    </section>
+
+    <section id="contactos" class="section">
+        <h2 class="section-title">Contacto</h2>
+        
+        <div class="contact-intro-text">
+            <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 8px;"></i> 
+            Para más información sobre el proyecto de análisis y diseño, o para coordinar entrevistas con el equipo de desarrollo, puedes comunicarte a través de los siguientes medios. Estamos ubicados en la ciudad de La Paz, Bolivia, y atendemos en horario corporativo.
+        </div>
+
+        <div class="integrantes-box">
+            <h4><i class="fas fa-users"></i> Equipo de trabajo:</h4>
+            <ul class="integrantes-list">
+                <li>Univ. Avilés Loza Michelle Jeicy</li>
+                <li>Univ. ...</li>
+                <li>Univ. ...</li>
+                <li>Univ. ...</li>
+                <li>Univ. ...</li>
+                <li>Univ. ...</li>
+            </ul>
+        </div>
+        
+        <div class="contact-info">
+            <p><i class="fas fa-envelope" style="color: var(--primary);"></i> <strong>Email:</strong> soporte@dismac.com.bo</p>
+            <p><i class="fas fa-phone-alt"></i> <strong>Teléfono:</strong> +591 2 211-2233</p>
+            <p><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong> Av. San Martín #123, Santa Cruz - Bolivia</p>
+            <p><i class="fab fa-github"></i> <strong>Repositorio:</strong> github.com/dismac/analisis-software</p>
+        </div>
+        <form id="contactForm" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; max-width: 500px;">
+            <input type="text" placeholder="Nombre" style="padding: 0.6rem; border:1px solid #ddd; border-radius: 2rem; padding-left: 1rem;">
+            <input type="email" placeholder="Correo" style="padding: 0.6rem; border:1px solid #ddd; border-radius: 2rem; padding-left: 1rem;">
+            <textarea placeholder="Mensaje" rows="3" style="padding: 0.6rem; border-radius: 1rem; border:1px solid #ddd;"></textarea>
+            <button type="button" onclick="alert('Mensaje enviado (demo). Conecta con backend real si lo deseas.')">Enviar consulta</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>DISMAC - Análisis y Diseño de Sistemas | Todos los derechos reservados © 2025</p>
+    <p><span style="color:#cc0000;">♥</span> Proyecto académico con enfoque profesional</p>
+</footer>
+
+<script>
+    // Menú responsive
+    const mobileBtn = document.getElementById('mobileMenu');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    }
+
+    // Resaltar link activo según scroll
+    const sections = document.querySelectorAll('section');
+    const navItems = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+        let current = "";
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            if (pageYOffset >= sectionTop) {
+                current = section.getAttribute("id");
+            }
+        });
+        navItems.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+    
+    console.log("✅ Página DISMAC actualizada — Texto informativo y lista de integrantes agregados en Contactos.");
+</script>
+</body>
+</html>
