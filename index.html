@@ -328,30 +328,54 @@ El presente proyecto tiene como objetivo realizar el análisis y diseño de un s
         </div>
         
 
-        <div class="subsection" id="arbol-problema">
-            <h3><i class="fas fa-tree"></i> Árbol de Problema</h3>
-            <div class="tree-node"><strong>Efecto principal:</strong> Pérdidas económicas y clientes insatisfechos</div>
-            <div class="tree-node"><strong>Problema central:</strong> Ineficiencia en la gestión de ventas e inventarios</div>
-            <div class="tree-node"><strong>Causas:</strong> Procesos manuales, falta de visibilidad en tiempo real, sistema legado obsoleto.</div>
-        </div>
+                <!-- ===== PARTE 2: ÁRBOL DE PROBLEMAS, FORMULACIÓN DEL PROBLEMA Y PROPÓSITO DEL ESTUDIO ===== -->
         
+        <div class="subsection" id="arbol-problema">
+            <h3><i class="fas fa-tree"></i> Árbol de Problemas</h3>
+            <div class="tree-node"><strong>🍃 Efectos:</strong> Diferencias en disponibilidad de productos entre sucursales, retrasos en atención de pedidos y servicios, menor eficiencia operativa, dificultades en planificación de compras e inventarios, impacto en experiencia del cliente y gestión organizacional.</div>
+            <div class="tree-node"><strong>⚠️ Problema Central:</strong> Limitaciones en la integración y sincronización de la información de inventarios, ventas y servicios en DISMAC, que dificultan el control operativo y la toma oportuna de decisiones.</div>
+            <div class="tree-node"><strong>🔧 Causas principales:</strong> Integración parcial entre sistemas de ventas, inventarios y servicios; retrasos en sincronización entre sucursales; limitaciones en trazabilidad de pedidos y servicios técnicos; restricciones funcionales para generar reportes; falta de procesos estandarizados; dificultad para generar reportes oportunos.</div>
+        </div>
+
         <div class="subsection" id="formulacion-problema">
             <h3><i class="fas fa-question-circle"></i> Formulación del Problema</h3>
+            <p><strong>Problema central:</strong> Limitaciones en la integración y sincronización de la información de inventarios, ventas y servicios en DISMAC, que dificultan el control operativo y la toma oportuna de decisiones.</p>
+            <p>La empresa DISMAC dispone de herramientas informáticas para apoyar sus operaciones comerciales; sin embargo, la falta de integración completa entre los diferentes procesos y módulos de información puede generar inconsistencias en los datos, retrasos en la actualización del inventario y dificultades en el seguimiento de pedidos y servicios.</p>
+            <p><strong>Pregunta de investigación:</strong></p>
+            <p><em>¿Cómo puede un sistema de información, diseñado mediante el paradigma del Análisis Estructurado a través de modelos ambientales y Diagramas de Flujo de Datos (DFD), y complementado con el Análisis y Diseño Orientado a Objetos mediante diagramas UML como casos de uso, clases y secuencia, contribuir a mejorar la integración, organización y gestión de la información en DISMAC, optimizando el control de inventarios, ventas y servicios para apoyar la toma de decisiones y la eficiencia operativa?</em></p>
+            <p><strong>Causas principales:</strong> Integración parcial entre sistemas, retrasos en sincronización, limitaciones en trazabilidad, restricciones funcionales para reportes, falta de procesos estandarizados, dificultad para generar reportes oportunos.</p>
+            <p><strong>Efectos:</strong> Diferencias en disponibilidad de productos, retrasos en atención, menor eficiencia operativa, dificultades en planificación de compras, impacto en experiencia del cliente.</p>
         </div>
-        
+
         <div class="subsection" id="proposito-estudio">
             <h3><i class="fas fa-bullseye"></i> Propósito del Estudio</h3>
-        </div>
-        
-        <div class="subsection" id="metodologia">
-            <h3><i class="fas fa-project-diagram"></i> Metodología</h3>
-            <br>
-            <p>Para el desarrollo del proyecto "Sistema de Gestión, Organización y Manejo de Información de DISMAC" se aplicaron los siguientes métodos de investigación:</p>
-            <br>
-            <div class="tree-node"><strong>Método descriptivo:</strong> Se utilizó el método descriptivo para identificar y describir los procesos relacionados con la gestión, organización y manejo de información dentro de DISMAC. Este método permitió conocer la situación actual de la empresa, identificar las actividades involucradas en el tratamiento de la información y comprender el funcionamiento general de los procesos analizados.
+            <p>El presente estudio tiene como propósito diseñar y estructurar un sistema de información para la gestión de inventario y ventas de electrodomésticos en la tienda DISMAC, reemplazando el registro manual y desarticulado por un sistema digital integrado que centralice la información y optimice los procesos comerciales.</p>
+            <p>Para alcanzar este propósito se aplicarán dos enfoques fundamentales del desarrollo de software:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Análisis y Diseño Estructurado, mediante la construcción de modelos ambientales y Diagramas de Flujo de Datos (DFD).</li>
+                <li>Análisis y Diseño Orientado a Objetos, mediante la elaboración de diagramas UML: casos de uso, clases y secuencia.</li>
+            </ul>
+
+            <div style="margin-top: 1.2rem;">
+                <h4 style="font-weight: 700; margin: 0.5rem 0;">Objetivo General</h4>
+                <p>Diseñar el sistema de información para la tienda DISMAC mediante la aplicación conjunta del Análisis y Diseño Estructurado y del Análisis y Diseño Orientado a Objetos, con el fin de modelar de manera completa los procesos, datos y componentes necesarios para la futura implementación del sistema de ventas e inventario de electrodomésticos.</p>
             </div>
-            <div class="tree-node"><strong>Método analítico:</strong> Se aplicó el método analítico para examinar detalladamente los procesos identificados, detectando problemas, limitaciones y oportunidades de mejora. A través de este análisis se logró determinar los requerimientos necesarios para la propuesta del sistema y establecer los componentes que formarán parte de la solución.</div>
-            <div class="tree-node"><strong>Método aplicado:</strong> La investigación posee un enfoque aplicado debido a que busca proponer una solución informática a una problemática específica. Los resultados obtenidos durante el análisis fueron utilizados para elaborar el diseño de un sistema orientado a mejorar la gestión y organización de la información en DISMAC.</div>
+
+            <div style="margin-top: 1rem;">
+                <h4 style="font-weight: 700; margin: 0.5rem 0;">Objetivos Específicos</h4>
+                <ol style="margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <li>Elaborar el modelo ambiental del sistema, identificando los agentes externos y los flujos de información con el entorno.</li>
+                    <li>Diseñar el Diagrama de Contexto que represente la relación del sistema con los actores externos (clientes, vendedores, proveedores y administradores).</li>
+                    <li>Construir los Diagramas de Flujo de Datos (DFD) de nivel 0 y nivel 1, identificando procesos, almacenes de datos y flujos de información del sistema.</li>
+                    <li>Especificar los procesos y flujos de datos mediante descripciones estructuradas que documenten la lógica del sistema.</li>
+                    <li>Identificar los actores del sistema y elaborar el Diagrama de Casos de Uso con sus respectivas especificaciones.</li>
+                    <li>Diseñar el Diagrama de Clases con los atributos, métodos y relaciones necesarios para representar la estructura estática del sistema.</li>
+                    <li>Desarrollar Diagramas de Secuencia para visualizar la interacción dinámica entre objetos en los procesos críticos: registro de venta, control de inventario y generación de reportes.</li>
+                    <li>Analizar los problemas actuales derivados del registro manual de inventario y ventas en DISMAC.</li>
+                    <li>Definir los requerimientos funcionales y no funcionales del sistema a partir del análisis realizado.</li>
+                    <li>Proponer un modelo conceptual y lógico que sirva como base para la posterior implementación del sistema.</li>
+                </ol>
+            </div>
         </div>
         
         <div class="subsection" id="planificacion">
