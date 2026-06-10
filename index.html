@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DISMAC · Análisis y Diseño de Sistemas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+        :root {
+            --primary: #cc0000;      
+            --primary-dark: #990000;
+            --primary-light: #ff1a1a;
+            --dark: #111111;
+            --gray-dark: #2c2c2c;
+            --gray-light: #f5f5f5;
+            --border-radius: 0.75rem;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 20px rgba(0,0,0,0.08);
+            --transition: all 0.25s ease;
+        }
+        .navbar {
+            background: white;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .logo span {
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary);
+            color: white;
+        }
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+        }
+        .section {
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 2.5rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid #eee;
+            scroll-margin-top: 80px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+            color: var(--dark);
+        }
+        .subsection {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--primary-light);
+        }
+        .subsection h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .info-card {
+            background: var(--gray-light);
+            padding: 1.2rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+        }
+        .info-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        .diagram-placeholder {
+            background: #fafafa;
+            border: 1px dashed #ccc;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+            margin: 1rem 0;
+        }
+        button, .btn-like {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+        .video-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .video-card {
+            flex: 1 1 280px;
+            background: var(--gray-light);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .video-card iframe {
+            width: 100%;
+            height: 180px;
+        }
+        .video-card p {
+            padding: 0.8rem;
+            font-weight: 500;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            font-size: 1.1rem;
+        }
+        footer {
+            background: var(--dark);
+            color: #aaa;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        .tree-node {
+            background: var(--gray-light);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            position: relative;
+            border-left: 5px solid var(--primary);
+        }
+        .contact-intro-text {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            color: #2c3e4e;
+            background: #fef5e8;
+            padding: 0.8rem 1rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid var(--primary);
+        }
+        .integrantes-box {
+            background: #f0f2f5;
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0 1.5rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        .integrantes-box h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .integrantes-list {
+            list-style: none;
+            margin-left: 1.2rem;
+        }
+        .integrantes-list li {
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        .integrantes-list li::before {
+            content: "✓";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+            }
+            .nav-links.show { display: flex; }
+            .nav-container { flex-direction: row; flex-wrap: wrap; }
+            .container { padding: 1.5rem; }
+            .section { padding: 1.2rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <h1>DIS<span>MAC</span></h1>
+        </div>
+        <div class="menu-toggle" id="mobileMenu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="#inicio" class="active">Inicio</a>
+            <a href="#marco-teorico">Marco Teórico</a>
+            <a href="#analisis-estructurado">Análisis Estructurado</a>
+            <a href="#orientado-objetos">Orientado a Objetos</a>
+            <a href="#videos">Videos</a>
+            <a href="#contactos">Contactos</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <section id="inicio" class="section">
+        <h2 class="section-title">Bienvenido a DISMAC</h2>
+        <p style="font-size:1.1rem; margin-top:0.5rem;">Sistema de Análisis y Diseño para la Gestión - DISMAC.</p>
+    </section>
+
+    <section id="marco-teorico" class="section">
+                <h2 class="section-title">Marco Teórico</h2>
+        
+        <div class="subsection" id="introduccion">
+            <h3><i class="fas fa-book-open"></i> Introducción</h3>
+            <p>Actualmente, las empresas comerciales como DISMAC enfrentan grandes desafíos en la gestión de información debido al crecimiento de sus operaciones tanto en tiendas físicas como en plataformas digitales. La correcta administración de ventas, inventarios, pedidos, entregas y servicios técnicos es fundamental para garantizar la eficiencia operativa y la satisfacción del cliente.
+DISMAC, como empresa líder en la comercialización de electrodomésticos en Bolivia, maneja múltiples procesos interrelacionados que requieren una integración eficiente de la información. Sin embargo, la existencia de sistemas parcialmente conectados y procesos manuales genera dificultades en la sincronización de datos, afectando la toma de decisiones y la calidad del servicio.
+El presente proyecto tiene como objetivo realizar el análisis y diseño de un sistema integral que permita optimizar la gestión de información en DISMAC, utilizando metodologías de análisis estructurado y orientado a objetos, con el fin de mejorar la eficiencia operativa y fortalecer su competitividad en el mercado.
+</p>
+        </div>
+        
+        <div class="subsection" id="antecedentes">
+            <h3><i class="fas fa-history"></i> Antecedentes</h3>
+            <p>        <p><strong>Dismac S.A.</strong> fue fundada en 1985 bajo el nombre de Dismatec S.A., consolidándose como una de las principales empresas del sector retail en Bolivia.</p>
+        <br>
+        <p>DISMAC es una empresa boliviana con amplia trayectoria en la comercialización de electrodomésticos, tecnología y artículos para el hogar. A lo largo de los años, ha expandido sus operaciones mediante múltiples sucursales y plataformas digitales.</p>
+        <br>
+        <p>El crecimiento de la empresa ha generado una mayor complejidad en la gestión de información, especialmente en áreas como:</p>
+        
+        <br>
+        <ul style="padding-left: 1.2rem; margin-top: 0.5rem;">
+            <li>Control de inventarios en distintas sucursales</li>
+            <li>Coordinación de ventas físicas y online</li>
+            <li>Gestión de entregas a domicilio</li>
+            <li>Seguimiento de servicios técnicos</li>
+        </ul>
+        <br>
+        
+        <p class="last-paragraph">Actualmente, muchos de estos procesos presentan limitaciones debido a la falta de integración total de los sistemas, lo cual impacta en la eficiencia y calidad del servicio.</p>
+</p>
+        </div>
+        
+        <div class="subsection" id="planteamiento-problema">
+            <h3><i class="fas fa-exclamation-triangle"></i> Planteamiento del Problema</h3>
+               <p>DISMAC, como empresa consolidada en la comercialización de electrodomésticos y tecnología en Bolivia, ha experimentado un crecimiento significativo tanto en número de sucursales como en canales de venta, incluyendo tiendas físicas y plataformas digitales. Sin embargo, este crecimiento ha traído consigo una mayor complejidad en la gestión de sus procesos internos.</p>
+        <br>
+        <p>Actualmente, la empresa enfrenta dificultades en la integración de la información entre sus diferentes áreas operativas, tales como ventas, inventarios, pedidos, logística de entregas y servicio técnico. Aunque existen sistemas que apoyan ciertas funciones, estos no se encuentran completamente integrados, lo que genera inconsistencias en los datos y retrasa la ejecución de procesos clave.</p>
+        <br>
+        <p>Por ejemplo, la falta de sincronización entre inventarios de sucursales y almacenes centrales puede ocasionar la venta de productos no disponibles, generando cancelaciones o retrasos en las entregas. Asimismo, los procesos manuales en el seguimiento de pedidos y servicios técnicos dificultan el control y la trazabilidad, afectando directamente la experiencia del cliente.</p>
+        <br>
+        <p>Además, la ausencia de herramientas analíticas integradas limita la capacidad de los gerentes para tomar decisiones estratégicas basadas en información actualizada y confiable. Esto impacta en la planificación de compras, control de stock y optimización de recursos.</p>
+        <br>
+        <p class="last-paragraph">En consecuencia, estas deficiencias provocan demoras en la atención al cliente, aumento de costos operativos, errores en los procesos y una disminución en la competitividad de la empresa en el mercado.</p>
+        </div>
+        
+
+                <!-- ===== PARTE 2: ÁRBOL DE PROBLEMAS, FORMULACIÓN DEL PROBLEMA Y PROPÓSITO DEL ESTUDIO ===== -->
+        
+        <div class="subsection" id="arbol-problema">
+            <h3><i class="fas fa-tree"></i> Árbol de Problemas</h3>
+			<!-- Imagen del árbol -->
+    		<div class="diagram-placeholder" style="margin-top: 1.5rem;">
+       			 <img src="imagenes/Arbol De Problemas.JPG" alt="Árbol de Problemas DISMAC" style="width:100%; max-width:800px; border-radius:10px;">
+    		</div>
+            <div class="tree-node"><strong> Efectos:</strong> Diferencias en disponibilidad de productos entre sucursales, retrasos en atención de pedidos y servicios, menor eficiencia operativa, dificultades en planificación de compras e inventarios, impacto en experiencia del cliente y gestión organizacional.</div>
+            <div class="tree-node"><strong> Problema Central:</strong> Limitaciones en la integración y sincronización de la información de inventarios, ventas y servicios en DISMAC, que dificultan el control operativo y la toma oportuna de decisiones.</div>
+            <div class="tree-node"><strong> Causas principales:</strong> Integración parcial entre sistemas de ventas, inventarios y servicios; retrasos en sincronización entre sucursales; limitaciones en trazabilidad de pedidos y servicios técnicos; restricciones funcionales para generar reportes; falta de procesos estandarizados; dificultad para generar reportes oportunos.</div>
+        </div>
+
+        <div class="subsection" id="formulacion-problema">
+            <h3><i class="fas fa-question-circle"></i> Formulación del Problema</h3>
+            <p><strong>Problema central:</strong> Limitaciones en la integración y sincronización de la información de inventarios, ventas y servicios en DISMAC, que dificultan el control operativo y la toma oportuna de decisiones.</p>
+            <p>La empresa DISMAC dispone de herramientas informáticas para apoyar sus operaciones comerciales; sin embargo, la falta de integración completa entre los diferentes procesos y módulos de información puede generar inconsistencias en los datos, retrasos en la actualización del inventario y dificultades en el seguimiento de pedidos y servicios.</p>
+            <p><strong>Pregunta de investigación:</strong></p>
+            <p><em>¿Cómo puede un sistema de información, diseñado mediante el paradigma del Análisis Estructurado a través de modelos ambientales y Diagramas de Flujo de Datos (DFD), y complementado con el Análisis y Diseño Orientado a Objetos mediante diagramas UML como casos de uso, clases y secuencia, contribuir a mejorar la integración, organización y gestión de la información en DISMAC, optimizando el control de inventarios, ventas y servicios para apoyar la toma de decisiones y la eficiencia operativa?</em></p>
+            <p><strong>Causas principales:</strong> Integración parcial entre sistemas, retrasos en sincronización, limitaciones en trazabilidad, restricciones funcionales para reportes, falta de procesos estandarizados, dificultad para generar reportes oportunos.</p>
+            <p><strong>Efectos:</strong> Diferencias en disponibilidad de productos, retrasos en atención, menor eficiencia operativa, dificultades en planificación de compras, impacto en experiencia del cliente.</p>
+        </div>
+
+        <div class="subsection" id="proposito-estudio">
+            <h3><i class="fas fa-bullseye"></i> Propósito del Estudio</h3>
+            <p>El presente estudio tiene como propósito diseñar y estructurar un sistema de información para la gestión de inventario y ventas de electrodomésticos en la tienda DISMAC, reemplazando el registro manual y desarticulado por un sistema digital integrado que centralice la información y optimice los procesos comerciales.</p>
+            <p>Para alcanzar este propósito se aplicarán dos enfoques fundamentales del desarrollo de software:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Análisis y Diseño Estructurado, mediante la construcción de modelos ambientales y Diagramas de Flujo de Datos (DFD).</li>
+                <li>Análisis y Diseño Orientado a Objetos, mediante la elaboración de diagramas UML: casos de uso, clases y secuencia.</li>
+            </ul>
+
+            <div style="margin-top: 1.2rem;">
+                <h4 style="font-weight: 700; margin: 0.5rem 0;">Objetivo General</h4>
+                <p>Diseñar el sistema de información para la tienda DISMAC mediante la aplicación conjunta del Análisis y Diseño Estructurado y del Análisis y Diseño Orientado a Objetos, con el fin de modelar de manera completa los procesos, datos y componentes necesarios para la futura implementación del sistema de ventas e inventario de electrodomésticos.</p>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <h4 style="font-weight: 700; margin: 0.5rem 0;">Objetivos Específicos</h4>
+                <ol style="margin-left: 1.5rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <li>Elaborar el modelo ambiental del sistema, identificando los agentes externos y los flujos de información con el entorno.</li>
+                    <li>Diseñar el Diagrama de Contexto que represente la relación del sistema con los actores externos (clientes, vendedores, proveedores y administradores).</li>
+                    <li>Construir los Diagramas de Flujo de Datos (DFD) de nivel 0 y nivel 1, identificando procesos, almacenes de datos y flujos de información del sistema.</li>
+                    <li>Especificar los procesos y flujos de datos mediante descripciones estructuradas que documenten la lógica del sistema.</li>
+                    <li>Identificar los actores del sistema y elaborar el Diagrama de Casos de Uso con sus respectivas especificaciones.</li>
+                    <li>Diseñar el Diagrama de Clases con los atributos, métodos y relaciones necesarios para representar la estructura estática del sistema.</li>
+                    <li>Desarrollar Diagramas de Secuencia para visualizar la interacción dinámica entre objetos en los procesos críticos: registro de venta, control de inventario y generación de reportes.</li>
+                    <li>Analizar los problemas actuales derivados del registro manual de inventario y ventas en DISMAC.</li>
+                    <li>Definir los requerimientos funcionales y no funcionales del sistema a partir del análisis realizado.</li>
+                    <li>Proponer un modelo conceptual y lógico que sirva como base para la posterior implementación del sistema.</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="subsection" id="planificacion">
+            <h3><i class="fas fa-calendar-alt"></i> Planificación de Actividades</h3>
+            <div class="tree-node"><strong>Cronograma General del Proyecto</strong></div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/cronograma general.png" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+
+            <div class="tree-node"><strong>Diagrama de Gantt</strong></div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/gantt.png" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+            
+            <div class="tree-node"><strong>Diagrama de PERT</strong></div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/pert.png" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+    </section>
+
+    <section id="analisis-estructurado" class="section">
+        <h2 class="section-title">Análisis Estructurado</h2>
+        
+        <div class="subsection">
+            <h3><i class="fas fa-globe"></i> Modelo Ambiental</h3>
+            <div class="info-card"><strong>Declaración de Propósitos:</strong> El sistema debe gestionar ventas, inventarios, clientes y generar reportes. Debe integrarse con sistemas externos de proveedores y pasarelas de pago.</div>
+	<div class="diagram-placeholder" id="contextDiagram">
+	    📊 Diagrama de Contexto<br>
+	    <small>[Entidades externas: Cliente, Proveedor, Administrador] → Sistema de Ventas DISMAC</small>
+	    <br><button onclick="alert('El sistema recibe pedidos, entrega facturas y solicita productos a proveedores.')">Ver detalle</button>
+	</div>
+
+        </div>
+        
+        <div class="subsection">
+            <h3><i class="fas fa-chart-simple"></i> Modelo de Comportamiento</h3>
+            <div class="info-card">
+                <strong>DFD por Niveles:</strong> 
+                Nivel 0: Procesos principales (Ventas, Inventario, Reportes). 
+            </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/diagrama0.jpg" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+            
+        </div>
+
+
+        <div class="subsection">
+            <div class="info-card">
+                <strong>DFD por Niveles:</strong> 
+                Nivel 1:
+            </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/dfd1.jpg" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+
+
+        <div class="subsection">
+            <div class="info-card">
+                <strong>DFD por Niveles:</strong> 
+                Nivel 2:
+            </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/dfd2.jpg" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+
+
+        <div class="subsection">
+            <div class="info-card">
+                <strong>DFD por Niveles:</strong> 
+                Nivel 3:
+            </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/dfd3.jpg" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+
+        <div class="subsection">
+            <div class="info-card">
+                <strong>DFD por Niveles:</strong> 
+                Nivel 4:
+            </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/dfd4.jpg" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+
+        <div class="subsection">
+            <div class="info-card">
+                <strong>DFD por Niveles:</strong> 
+                Nivel 5:
+            </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/dfd5.jpg" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+
+
+
+
+
+    </section>
+
+    <section id="orientado-objetos" class="section">
+        <h2 class="section-title">Orientado a Objetos</h2>
+        <div class="card-grid">
+            <div class="info-card"><h4><i class="fas fa-diagram-project"></i> Diagrama de Clases</h4><p>Clases principales: Venta, Producto, Cliente, Inventario, Proveedor. Atributos y métodos definidos con visibilidad privada/pública.</p></div>
+        </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/Diagrama_Clases.png" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+        <div class="card-grid">
+            <div class="info-card"><h4><i class="fas fa-diagram-project"></i> Caso de uso de Registro de venta</h4></div>
+        </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/caso de uso 1.png" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+
+
+        <div class="card-grid">
+            <div class="info-card"><h4><i class="fas fa-diagram-project"></i> Caso de uso de Registro de venta</h4></div>
+        </div>
+            <div class="diagram-placeholder" id="dfdPlaceholder">
+                <img src="imagenes/caso de uso 1.png" alt="Diagrama DFD Nivel 0" 
+                    style="width:100%; max-width:800px; border-radius:10px;">
+            </div>
+        </div>
+
+
+
+
+<!-- 3. CASO DE USO DE TIPO TEXTO -->
+<div class="card-grid">
+    <div class="info-card">
+        <h4><i class="fas fa-file-alt"></i> 3. Caso de Uso de Tipo Texto</h4>
+    </div>
+</div>
+
+
+<div class="info-card">
+
+
+<h3>CASO SELECCIONADO</h3>
+<p><strong>"Registrar venta"</strong></p>
+
+<h3>PLANTILLA — ALTO NIVEL</h3>
+<table class="table">
+    <tr>
+        <th>CASO DE USO</th>
+        <td>Registrar venta</td>
+    </tr>
+    <tr>
+        <th>CÓDIGO</th>
+        <td>CU2</td>
+    </tr>
+    <tr>
+        <th>ACTORES</th>
+        <td>Cliente, Vendedor</td>
+    </tr>
+    <tr>
+        <th>TIPO</th>
+        <td>Primario</td>
+    </tr>
+    <tr>
+        <th>DESCRIPCIÓN</th>
+        <td>Permite registrar la venta de productos y generar la factura correspondiente.</td>
+    </tr>
+    <tr>
+        <th>FECHA</th>
+        <td>___</td>
+    </tr>
+    <tr>
+        <th>VERSIÓN</th>
+        <td>1.0</td>
+    </tr>
+</table>
+
+<h3>PLANTILLA — EXPANDIDO</h3>
+<table class="table">
+    <tr>
+        <th>CASO DE USO</th>
+        <td>Registrar venta</td>
+    </tr>
+    <tr>
+        <th>CÓDIGO</th>
+        <td>CU2</td>
+    </tr>
+    <tr>
+        <th>ACTORES</th>
+        <td>Cliente (iniciador), Vendedor (responsable)</td>
+    </tr>
+    <tr>
+        <th>PROPÓSITO</th>
+        <td>Registrar correctamente la venta de productos y actualizar inventario en tiempo real.</td>
+    </tr>
+    <tr>
+        <th>RESUMEN</th>
+        <td>El sistema permite registrar productos vendidos, procesar el pago y emitir factura.</td>
+    </tr>
+    <tr>
+        <th>TIPO</th>
+        <td>Primario</td>
+    </tr>
+    <tr>
+        <th>REFERENCIAS CRUZADAS</th>
+        <td>Gestión de inventario</td>
+    </tr>
+    <tr>
+        <th>PRECONDICIONES</th>
+        <td>El producto debe existir en inventario y el vendedor debe estar autenticado.</td>
+    </tr>
+    <tr>
+        <th>POSTCONDICIONES</th>
+        <td>Venta registrada, inventario actualizado y factura emitida.</td>
+    </tr>
+    <tr>
+        <th>AUTOR</th>
+        <td>___</td>
+    </tr>
+    <tr>
+        <th>FECHA</th>
+        <td>___</td>
+    </tr>
+    <tr>
+        <th>VERSIÓN</th>
+        <td>1.0</td>
+    </tr>
+</table>
+
+<h3>SECUENCIA NORMAL DE EVENTOS</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ACCIONES DEL ACTOR</th>
+            <th>RESPUESTA DEL SISTEMA</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1. El cliente solicita productos</td>
+            <td>2. El sistema muestra disponibilidad</td>
+        </tr>
+        <tr>
+            <td>3. El vendedor registra productos</td>
+            <td>4. El sistema verifica stock</td>
+        </tr>
+        <tr>
+            <td>5. El vendedor procesa el pago</td>
+            <td>6. El sistema registra la venta</td>
+        </tr>
+        <tr>
+            <td>7. El vendedor confirma operación</td>
+            <td>8. El sistema genera factura y actualiza inventario</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>CURSOS ALTERNOS</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Línea</th>
+            <th>Evento</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Línea 4</td>
+            <td>Si no existe stock suficiente, el sistema muestra mensaje de producto no disponible.</td>
+        </tr>
+        <tr>
+            <td>Línea 5</td>
+            <td>Si el pago es rechazado, el sistema cancela la transacción.</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+
+
+    </section>
+
+    <section id="videos" class="section">
+        <h2 class="section-title">Recursos Multimedia</h2>
+        <div class="video-grid">
+            <div class="video-card">
+				<iframe width="500" height="400"
+				    src="https://www.youtube.com/embed/f8-P_50okVg"
+				    title="Modelo de Caso de Uso de Sistema con Drawio"
+				    frameborder="0"
+				    allowfullscreen>
+				</iframe>
+                <p>🎥 Modelo de Caso de Uso de Sistema con Drawio</p>
+            </div>
+            <div class="video-card">
+				<iframe width="500" height="400"
+				    src="https://www.youtube.com/embed/2BB-cKIhF0s"
+				    title="Modelo de Caso de Uso de Negocio con Enterprise Architect"
+				    frameborder="0"
+				    allowfullscreen>
+				</iframe>
+                <p>📐 Modelo de Caso de Uso de Negocio con Enterprise Architect</p>
+            </div>
+        </div>
+        <p style="margin-top: 1rem;"><em>Recursos.</em></p>
+
+<a href="https://drive.google.com/file/d/1dPXZEuZn7qtnz96Yv95OuhWU4YNZjgW1/view?usp=drive_link" 
+   target="_blank" 
+   class="btn btn-primary">
+   INFORME.PDF de Sistema de Gestión, Organización y Manejo de Información de DISMAC
+</a>
+
+    </section>
+
+    <section id="contactos" class="section">
+        <h2 class="section-title">Contacto</h2>
+        
+        <div class="contact-intro-text">
+            <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 8px;"></i> 
+            Para más información sobre el proyecto de análisis y diseño, o para coordinar entrevistas con el equipo de desarrollo, puedes comunicarte a través de los siguientes medios. Estamos ubicados en la ciudad de La Paz, Bolivia, y atendemos en horario corporativo.
+        </div>
+
+        <div class="integrantes-box">
+            <h4><i class="fas fa-users"></i> Equipo de trabajo:</h4>
+            <ul class="integrantes-list">
+                <li>Univ. Avilés Loza Michelle Jeicy</li>
+                <li>Univ. Condori Aguilar Eddy Omar</li>
+                <li>Univ. ...</li>
+                <li>Univ. ...</li>
+                <li>Univ. Lima Ramos Joseph</li>
+            </ul>
+        </div>
+        
+        <div class="contact-info">
+            <p><i class="fas fa-envelope" style="color: var(--primary);"></i> <strong>Email:</strong> soporte@dismac.com.bo</p>
+            <p><i class="fas fa-phone-alt"></i> <strong>Teléfono:</strong> +591 2 211-2233</p>
+            <p><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong> Av. San Martín #123, Santa Cruz - Bolivia</p>
+            <p><i class="fab fa-github"></i> <strong>Repositorio:</strong> github.com/dismac/analisis-software</p>
+        </div>
+        <form id="contactForm" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; max-width: 500px;">
+            <input type="text" placeholder="Nombre" style="padding: 0.6rem; border:1px solid #ddd; border-radius: 2rem; padding-left: 1rem;">
+            <input type="email" placeholder="Correo" style="padding: 0.6rem; border:1px solid #ddd; border-radius: 2rem; padding-left: 1rem;">
+            <textarea placeholder="Mensaje" rows="3" style="padding: 0.6rem; border-radius: 1rem; border:1px solid #ddd;"></textarea>
+            <button type="button" onclick="alert('Mensaje enviado (demo). Conecta con backend real si lo deseas.')">Enviar consulta</button>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>DISMAC - Análisis y Diseño de Sistemas | Todos los derechos reservados © 2026</p>
+    <p><span style="color:#cc0000;">♥</span> Proyecto académico con enfoque profesional</p>
+</footer>
+
+<script>
+    // Menú responsive
+    const mobileBtn = document.getElementById('mobileMenu');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    }
+
+    // Resaltar link activo según scroll
+    const sections = document.querySelectorAll('section');
+    const navItems = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+        let current = "";
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            if (pageYOffset >= sectionTop) {
+                current = section.getAttribute("id");
+            }
+        });
+        navItems.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+    
+    console.log("✅ Página DISMAC actualizada — Texto informativo y lista de integrantes agregados en Contactos.");
+</script>
+</body>
+</html>
